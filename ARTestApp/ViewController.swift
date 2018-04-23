@@ -10,6 +10,13 @@ import UIKit
 import SceneKit
 import ARKit
 
+enum ControlTag : Int {
+    case right = 1
+    case left  = 2
+    case up = 3
+    case down = 4
+}
+
 class ViewController: UIViewController, ARSCNViewDelegate {
 
     @IBOutlet var sceneView: ARSCNView!
@@ -19,6 +26,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     var posY: CGFloat = 0.0
     var posZ: CGFloat = -0.2
     var translationFactor: CGFloat = 0.3
+    let touchHandler = TouchHandler()
 
 
     override func viewDidLoad() {
@@ -123,26 +131,24 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     func moveToRight() {
         let zRotate:CGFloat = 0.5
-        let xpos:CGFloat = 1.0
+        let xpos:CGFloat = 0.2
 
-        self.moveNode(self.node!, xPosition: xpos, yPosition: 0, zPosition: 0, completion: {
-        })
+        self.moveNode(self.node!, xPosition: xpos, yPosition: 0, zPosition: 0, completion: {})
         rotateNode(node!, xPosition: 0, yPosition: 0, zPosition: -zRotate, completion: {})
         
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.3) { // change 2 to desired number of seconds
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.3) { // change 2 to desired number of seconds
             self.rotateNode(self.node!, xPosition: 0, yPosition: 0, zPosition: zRotate, completion: {})
         }
     }
     
     func moveToLeft() {
         let zRotate:CGFloat = 0.5
-        let xpos:CGFloat = -1.0
-        self.moveNode(self.node!, xPosition: xpos, yPosition: 0, zPosition: 0, completion: {
-        })
-        rotateNode(node!, xPosition: 0, yPosition: 0, zPosition: zRotate, completion: {})
+        let xpos:CGFloat = -0.2
+        self.moveNode(self.node!, xPosition: xpos, yPosition: 0, zPosition: 0, completion: {})
+       rotateNode(node!, xPosition: 0, yPosition: 0, zPosition: zRotate, completion: {})
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.4) { // change 2 to desired number of seconds
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.3) { // change 2 to desired number of seconds
             self.rotateNode(self.node!, xPosition: 0, yPosition: 0, zPosition: -zRotate, completion: {})
         }
     }
@@ -150,7 +156,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     func moveUP() {
         let xRotate:CGFloat = 0.1
-        let ypos:CGFloat = 0.3
+        let ypos:CGFloat = 0.2
 
         rotateNode(node!, xPosition: xRotate, yPosition: 0, zPosition: 0, completion: {})
         self.moveNode(self.node!, xPosition: 0, yPosition: ypos, zPosition: 0, completion: {})
@@ -162,7 +168,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     func moveDown() {
         let xRotate:CGFloat = 0.1
-        let ypos:CGFloat = -0.3
+        let ypos:CGFloat = -0.2
 
         rotateNode(node!, xPosition: -xRotate, yPosition: 0, zPosition: 0, completion: {})
         self.moveNode(self.node!, xPosition: 0, yPosition: ypos, zPosition: 0, completion: {})
@@ -183,30 +189,52 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
  
     
+//Touch events
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        super.touchesBegan(touches, with: event)
+        print("touchesBegan")
+        let touch: UITouch = touches.first!
+        let tag = touch.view?.tag
+        print("Tag: \(tag!)")
+        touchHandler.onTouchBegan {
+            if let tag = ControlTag(rawValue: tag!){
+                switch tag {
+                case .right:
+                    self.moveToRight()
+                case .left:
+                    self.moveToLeft()
+                case .up:
+                    self.moveUP()
+                case .down:
+                    self.moveDown()
+                }
+            }
+        }
+        
+    }
+
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
+        print("touchesEnded")
+        
+        self.touchHandler.onTouchEnd {
+        }
+    }
+    
+//    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        super.touchesCancelled(touches, with: event)
+//        print("touchesCancelled")
+//
+//        self.touchHandler.onTouchEnd {
+//        }
+//    }
+//
+
 //Button action methods
     
-    @IBAction func onLeft(_ sender: Any) {
-        //posX = posX - translationFactor
-        moveToLeft()
-
-    }
-    
-    @IBAction func onRight(_ sender: Any) {
-       // posX = posX + translationFactor
-       moveToRight()
-
-    }
-    
-    @IBAction func onUp(_ sender: Any) {
-       // posY = posY + translationFactor
-        moveUP()
-    }
-    
-    @IBAction func onDown(_ sender: Any) {
-        //posY = posY - translationFactor
-        moveDown()
-    }
-    
+ 
 
     @IBAction func onForward(_ sender: Any) {
         moveForward()
@@ -217,10 +245,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         moveBackward()
     }
     
-    @IBAction func onRghtTouchUpInside(_ sender: Any) {
-    }
-    
-    
+
+
     
     // MARK: - ARSCNViewDelegate
     

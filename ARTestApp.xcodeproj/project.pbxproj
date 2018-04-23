@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B3FFD92208DC07500ABDBF1 /* TouchHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FFD91208DC07500ABDBF1 /* TouchHandler.swift */; };
+		1B3FFD94208DCF7E00ABDBF1 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FFD93208DCF7E00ABDBF1 /* Button.swift */; };
 		1BE17A60207B581000B4BC60 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE17A5F207B581000B4BC60 /* AppDelegate.swift */; };
 		1BE17A62207B581000B4BC60 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 1BE17A61207B581000B4BC60 /* art.scnassets */; };
 		1BE17A64207B581000B4BC60 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE17A63207B581000B4BC60 /* ViewController.swift */; };
@@ -16,6 +18,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1B3FFD91208DC07500ABDBF1 /* TouchHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchHandler.swift; sourceTree = "<group>"; };
+		1B3FFD93208DCF7E00ABDBF1 /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		1BE17A5C207B581000B4BC60 /* ARTestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARTestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BE17A5F207B581000B4BC60 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1BE17A61207B581000B4BC60 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -63,6 +67,8 @@
 				1BE17A68207B581000B4BC60 /* Assets.xcassets */,
 				1BE17A6A207B581000B4BC60 /* LaunchScreen.storyboard */,
 				1BE17A6D207B581000B4BC60 /* Info.plist */,
+				1B3FFD91208DC07500ABDBF1 /* TouchHandler.swift */,
+				1B3FFD93208DCF7E00ABDBF1 /* Button.swift */,
 			);
 			path = ARTestApp;
 			sourceTree = "<group>";
@@ -140,8 +146,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B3FFD92208DC07500ABDBF1 /* TouchHandler.swift in Sources */,
 				1BE17A64207B581000B4BC60 /* ViewController.swift in Sources */,
 				1BE17A60207B581000B4BC60 /* AppDelegate.swift in Sources */,
+				1B3FFD94208DCF7E00ABDBF1 /* Button.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
