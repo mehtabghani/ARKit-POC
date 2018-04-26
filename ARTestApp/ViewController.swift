@@ -27,6 +27,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     var posZ: CGFloat = -0.2
     var translationFactor: CGFloat = 0.3
     let touchHandler = TouchHandler()
+    var planeNode: SCNNode?
 
 
     override func viewDidLoad() {
@@ -56,6 +57,13 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // Create a session configuration
         let configuration = ARWorldTrackingConfiguration()
+        
+        if #available(iOS 11.3, *) {
+            configuration.planeDetection = [.horizontal, .vertical]
+        } else {
+            // Fallback on earlier versions
+            configuration.planeDetection = .horizontal
+        }
 
         // Run the view's session
         sceneView.session.run(configuration)
@@ -246,18 +254,80 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
 
+    // Try with a floor node instead - this didn't work so well but leaving in for reference
+    func createPlaneNode(anchor: ARPlaneAnchor) -> SCNNode {
+        
+        let node = SCNNode()
+        node.geometry = SCNBox(width: 0.05, height: 0.05, length: 0.05, chamferRadius: 0)
+        node.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
+        node.position = SCNVector3Make(anchor.center.x,0,anchor.center.z)
+        
+        return node
+    }
 
     
     // MARK: - ARSCNViewDelegate
     
-/*
-    // Override to create and configure nodes for anchors added to the view's session.
-    func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
-        let node = SCNNode()
-     
-        return node
+    func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+        guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
+        
+        
+        // Remove existing plane nodes
+        node.enumerateChildNodes {
+            (childNode, _) in
+            childNode.removeFromParentNode()
+        }
+        if let node = planeNode {
+            node.removeFromParentNode()
+        }
+
+        planeNode = createPlaneNode(anchor: planeAnchor)
+        
+        node.addChildNode(planeNode!)
     }
-*/
+    
+    // When a detected plane is updated, make a new planeNode
+    func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
+        guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
+        
+        // Remove existing plane nodes
+        node.enumerateChildNodes {
+            (childNode, _) in
+            childNode.removeFromParentNode()
+        }
+        
+        if let node = planeNode {
+            node.removeFromParentNode()
+           
+        }
+        
+        planeNode = createPlaneNode(anchor: planeAnchor)
+        node.addChildNode(planeNode!)
+    }
+    
+    // When a detected plane is removed, remove the planeNode
+    func renderer(_ renderer: SCNSceneRenderer, didRemove node: SCNNode, for anchor: ARAnchor) {
+        guard anchor is ARPlaneAnchor else { return }
+        
+        // Remove existing plane nodes
+        node.enumerateChildNodes {
+            (childNode, _) in
+            childNode.removeFromParentNode()
+        }
+
+        if let _node = planeNode {
+            _node.removeFromParentNode()
+        }
+        
+    }
+
+//    // Override to create and configure nodes for anchors added to the view's session.
+//    func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
+//        let node = SCNNode()
+//
+//        return node
+//    }
+
     
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user
