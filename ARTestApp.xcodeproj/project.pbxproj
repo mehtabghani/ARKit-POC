@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B2951F12091DF1C002E1401 /* ShipScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2951F02091DF1C002E1401 /* ShipScene.swift */; };
+		1B2951F42091E03A002E1401 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2951F32091E03A002E1401 /* Utils.swift */; };
+		1B2951F72091E179002E1401 /* NodeAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2951F62091E179002E1401 /* NodeAnimation.swift */; };
 		1B3FFD92208DC07500ABDBF1 /* TouchHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FFD91208DC07500ABDBF1 /* TouchHandler.swift */; };
 		1B3FFD94208DCF7E00ABDBF1 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FFD93208DCF7E00ABDBF1 /* Button.swift */; };
 		1BE17A60207B581000B4BC60 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE17A5F207B581000B4BC60 /* AppDelegate.swift */; };
@@ -18,6 +21,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1B2951F02091DF1C002E1401 /* ShipScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShipScene.swift; sourceTree = "<group>"; };
+		1B2951F32091E03A002E1401 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		1B2951F62091E179002E1401 /* NodeAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeAnimation.swift; sourceTree = "<group>"; };
 		1B3FFD91208DC07500ABDBF1 /* TouchHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchHandler.swift; sourceTree = "<group>"; };
 		1B3FFD93208DCF7E00ABDBF1 /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		1BE17A5C207B581000B4BC60 /* ARTestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARTestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -41,6 +47,38 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1B2951EE2091DE1F002E1401 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				1BE17A63207B581000B4BC60 /* ViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1B2951EF2091DE3E002E1401 /* Scene */ = {
+			isa = PBXGroup;
+			children = (
+				1B2951F02091DF1C002E1401 /* ShipScene.swift */,
+			);
+			path = Scene;
+			sourceTree = "<group>";
+		};
+		1B2951F22091E02C002E1401 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				1B2951F32091E03A002E1401 /* Utils.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		1B2951F52091E0FE002E1401 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				1B2951F62091E179002E1401 /* NodeAnimation.swift */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
 		1BE17A53207B580F00B4BC60 = {
 			isa = PBXGroup;
 			children = (
@@ -60,9 +98,12 @@
 		1BE17A5E207B581000B4BC60 /* ARTestApp */ = {
 			isa = PBXGroup;
 			children = (
+				1B2951F52091E0FE002E1401 /* Helper */,
+				1B2951F22091E02C002E1401 /* Utils */,
+				1B2951EF2091DE3E002E1401 /* Scene */,
+				1B2951EE2091DE1F002E1401 /* Controller */,
 				1BE17A5F207B581000B4BC60 /* AppDelegate.swift */,
 				1BE17A61207B581000B4BC60 /* art.scnassets */,
-				1BE17A63207B581000B4BC60 /* ViewController.swift */,
 				1BE17A65207B581000B4BC60 /* Main.storyboard */,
 				1BE17A68207B581000B4BC60 /* Assets.xcassets */,
 				1BE17A6A207B581000B4BC60 /* LaunchScreen.storyboard */,
@@ -146,10 +187,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B2951F12091DF1C002E1401 /* ShipScene.swift in Sources */,
 				1B3FFD92208DC07500ABDBF1 /* TouchHandler.swift in Sources */,
 				1BE17A64207B581000B4BC60 /* ViewController.swift in Sources */,
 				1BE17A60207B581000B4BC60 /* AppDelegate.swift in Sources */,
+				1B2951F72091E179002E1401 /* NodeAnimation.swift in Sources */,
 				1B3FFD94208DCF7E00ABDBF1 /* Button.swift in Sources */,
+				1B2951F42091E03A002E1401 /* Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

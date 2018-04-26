@@ -40,8 +40,8 @@ class TouchHandler {
     
     func onTouchEnd(event: ()->Void) {
         cancelTimer()
-        print("cancel")
-
+        print("moving stoped")
+        event()
     }
     
 }

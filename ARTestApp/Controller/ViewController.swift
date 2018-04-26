@@ -21,6 +21,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 
     @IBOutlet var sceneView: ARSCNView!
     var node: SCNNode?
+    var shipScene: ShipScene?
 
     var posX: CGFloat = 0.0
     var posY: CGFloat = 0.0
@@ -29,10 +30,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     let touchHandler = TouchHandler()
     var planeNode: SCNNode?
 
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
+    
+    func setupSceneView () {
         // Set the view's delegate
         sceneView.delegate = self
         
@@ -42,14 +41,24 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints, ARSCNDebugOptions.showWorldOrigin]
         
         // Create a new scene
-        let scene = SCNScene(named: "art.scnassets/ship.scn")!
-        node = scene.rootNode.childNode(withName: "ship", recursively: true)
-        // Set the scene to the view
-        //sceneView.scene = scene
-
+        //let scene = SCNScene(named: "art.scnassets/ship.scn")!
+        //node = scene.rootNode.childNode(withName: "ship", recursively: true)
+        shipScene = ShipScene()
+        
+        guard let scene = shipScene else {
+            print("failed to load scene")
+            return;
+        }
+        
+        node = scene.getSceneNode();
         
         sceneView.scene.rootNode.addChildNode(node!)
+        
+    }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupSceneView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -72,9 +81,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-       updateNodePosition()
  
     }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
@@ -98,125 +107,30 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 //        pNode.addChildNode(node)
 //    }
     
-    func updateNodePosition() {
-        guard let n = node else {
-            return
-        }
-        
-        n.position = SCNVector3(posX, posY, posZ)
-    }
-    
-    func degToRadians(degrees:Double) -> Double{
-        return degrees * (Double.pi/2)
-    }
-    
-    
-    func rotateNodeTo(_ node: SCNNode, xPosition x:CGFloat, yPosition y:CGFloat, zPosition z:CGFloat, completion: @escaping() -> Void) {
-        let action = SCNAction.rotateTo(x: x, y: y, z: z, duration: 0.5)
-        node.runAction(action) {
-            completion()
-        }
-    }
-    
 
-    //rotate node relative to its position
-    func rotateNode(_ node: SCNNode, xPosition x:CGFloat, yPosition y:CGFloat, zPosition z:CGFloat, completion: @escaping() -> Void) {
-        let action = SCNAction.rotateBy(x: x, y: y, z: z, duration: 0.5)
-        node.runAction(action) {
-            completion()
-        }
-        
-    }
-    
-    func moveNode(_ node: SCNNode, xPosition x:CGFloat, yPosition y:CGFloat, zPosition z:CGFloat,
-                  completion: @escaping () -> Void) {
-        let action = SCNAction.moveBy(x: x, y: y, z: z, duration: 3)
-        action.timingMode = .easeIn
-        node.runAction(action) {
-            completion()
-        }
-    }
-    
-    func moveToRight() {
-        let zRotate:CGFloat = 0.5
-        let xpos:CGFloat = 0.2
-
-        self.moveNode(self.node!, xPosition: xpos, yPosition: 0, zPosition: 0, completion: {})
-        rotateNode(node!, xPosition: 0, yPosition: 0, zPosition: -zRotate, completion: {})
-        
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.3) { // change 2 to desired number of seconds
-            self.rotateNode(self.node!, xPosition: 0, yPosition: 0, zPosition: zRotate, completion: {})
-        }
-    }
-    
-    func moveToLeft() {
-        let zRotate:CGFloat = 0.5
-        let xpos:CGFloat = -0.2
-        self.moveNode(self.node!, xPosition: xpos, yPosition: 0, zPosition: 0, completion: {})
-       rotateNode(node!, xPosition: 0, yPosition: 0, zPosition: zRotate, completion: {})
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.3) { // change 2 to desired number of seconds
-            self.rotateNode(self.node!, xPosition: 0, yPosition: 0, zPosition: -zRotate, completion: {})
-        }
-    }
-    
-    
-    func moveUP() {
-        let xRotate:CGFloat = 0.1
-        let ypos:CGFloat = 0.2
-
-        rotateNode(node!, xPosition: xRotate, yPosition: 0, zPosition: 0, completion: {})
-        self.moveNode(self.node!, xPosition: 0, yPosition: ypos, zPosition: 0, completion: {})
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { // change 2 to desired number of seconds
-            self.rotateNode(self.node!, xPosition: -xRotate, yPosition: 0, zPosition: 0, completion: {})
-        }
-    }
-    
-    func moveDown() {
-        let xRotate:CGFloat = 0.1
-        let ypos:CGFloat = -0.2
-
-        rotateNode(node!, xPosition: -xRotate, yPosition: 0, zPosition: 0, completion: {})
-        self.moveNode(self.node!, xPosition: 0, yPosition: ypos, zPosition: 0, completion: {})
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { // change 2 to desired number of seconds
-            self.rotateNode(self.node!, xPosition: xRotate, yPosition: 0, zPosition: 0, completion: {})
-        }
-
-    }
-    
-    func moveForward() {
-        let zpos:CGFloat = -0.5;
-        self.moveNode(self.node!, xPosition: 0, yPosition: 0, zPosition: zpos, completion: {})
-    }
-    func moveBackward() {
-        let zpos:CGFloat = 0.5;
-        self.moveNode(self.node!, xPosition: 0, yPosition: 0, zPosition: zpos, completion: {})
-    }
- 
-    
+  
 //Touch events
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         super.touchesBegan(touches, with: event)
         print("touchesBegan")
+        
         let touch: UITouch = touches.first!
         let tag = touch.view?.tag
         print("Tag: \(tag!)")
+        
         touchHandler.onTouchBegan {
             if let tag = ControlTag(rawValue: tag!){
                 switch tag {
                 case .right:
-                    self.moveToRight()
+                    self.shipScene!.moveToRight()
                 case .left:
-                    self.moveToLeft()
+                    self.shipScene!.moveToLeft()
                 case .up:
-                    self.moveUP()
+                    self.shipScene!.moveUP()
                 case .down:
-                    self.moveDown()
+                    self.shipScene!.moveDown()
                 }
             }
         }
@@ -227,7 +141,25 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         super.touchesEnded(touches, with: event)
         print("touchesEnded")
         
+        
+        let touch: UITouch = touches.first!
+        let tag = touch.view?.tag
+        
         self.touchHandler.onTouchEnd {
+            
+            if let tag = ControlTag(rawValue: tag!){
+                switch tag {
+                case .right:
+                    self.shipScene!.onMoveRightRelease()
+                case .left:
+                    self.shipScene!.onMoveLeftRelease()
+                case .up:
+                    self.shipScene!.onMoveUpRelease()
+                case .down:
+                    self.shipScene!.onMoveDownRelease()
+
+                }
+            }
         }
     }
     
@@ -245,12 +177,12 @@ class ViewController: UIViewController, ARSCNViewDelegate {
  
 
     @IBAction func onForward(_ sender: Any) {
-        moveForward()
+        shipScene!.moveForward()
     }
     
     
     @IBAction func onBack(_ sender: Any) {
-        moveBackward()
+       shipScene!.moveBackward()
     }
     
 
@@ -331,9 +263,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user
-        
 
-        
     }
     
     func sessionWasInterrupted(_ session: ARSession) {
