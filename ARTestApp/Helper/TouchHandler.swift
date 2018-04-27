@@ -16,6 +16,7 @@ class TouchHandler {
     
     func startTimer() {
         _maneuvering = Timer.scheduledTimer(timeInterval: timerInterval, target: self, selector: #selector(move), userInfo: nil, repeats: true)
+        _maneuvering?.fire()
     }
     
     func cancelTimer () {
@@ -35,6 +36,7 @@ class TouchHandler {
     
     func onTouchBegan(event: @escaping ()->Void) {
         _event = event
+        cancelTimer()
         self.startTimer()
     }
     

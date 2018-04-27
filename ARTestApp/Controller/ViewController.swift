@@ -15,7 +15,14 @@ enum ControlTag : Int {
     case left  = 2
     case up = 3
     case down = 4
+
 }
+
+enum MovementTag : Int {
+    case forward = 5
+    case backward = 6
+}
+
 
 class ViewController: UIViewController, ARSCNViewDelegate {
 
@@ -23,6 +30,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     var node: SCNNode?
     var shipScene: ShipScene?
     let touchHandler = TouchHandler()
+    let touchHandlerForwardBackward = TouchHandler()
+
     var planeNode: SCNNode?
 
     
@@ -46,11 +55,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
         
         node = scene.getSceneNode();
-        node?.position = SCNVector3Make(0.0, 0.0, -2.0)
+        node?.position = SCNVector3Make(0.0, 0.0, -2.0) // setting initial postion of ship in world
 
-        
         sceneView.scene.rootNode.addChildNode(node!)
-        
     }
 
     override func viewDidLoad() {
@@ -117,45 +124,77 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let tag = touch.view?.tag
         print("Tag: \(tag!)")
         
-        touchHandler.onTouchBegan {
-            if let tag = ControlTag(rawValue: tag!){
-                switch tag {
-                case .right:
-                    self.shipScene!.moveToRight()
-                case .left:
-                    self.shipScene!.moveToLeft()
-                case .up:
-                    self.shipScene!.moveUP()
-                case .down:
-                    self.shipScene!.moveDown()
-                }
+        if tag == 0 {
+            return
+        }
+        
+        if let tag = MovementTag(rawValue: tag!) {
+            switch tag {
+            case .forward:
+                touchHandlerForwardBackward.onTouchBegan { self.shipScene?.moveForward() }
+                return
+            case .backward:
+                touchHandlerForwardBackward.onTouchBegan { self.shipScene?.moveBackward() }
+                return
             }
         }
         
+        if let tag = ControlTag(rawValue: tag!) {
+            switch tag {
+            case .right:
+                touchHandler.onTouchBegan { self.shipScene?.moveToRight() }
+                break
+            case .left:
+                touchHandler.onTouchBegan { self.shipScene?.moveToLeft() }
+                break
+            case .up:
+                touchHandler.onTouchBegan { self.shipScene?.moveUP() }
+                break
+            case .down:
+                touchHandler.onTouchBegan { self.shipScene?.moveDown() }
+                break
+            }
+        }
+       
+
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
         print("touchesEnded")
         
-        
         let touch: UITouch = touches.first!
         let tag = touch.view?.tag
         
-        self.touchHandler.onTouchEnd {
-            
-            if let tag = ControlTag(rawValue: tag!){
-                switch tag {
-                case .right:
-                    self.shipScene!.onMoveRightRelease()
-                case .left:
-                    self.shipScene!.onMoveLeftRelease()
-                case .up:
-                    self.shipScene!.onMoveUpRelease()
-                case .down:
-                    self.shipScene!.onMoveDownRelease()
-
-                }
+        if tag == 0 {
+            return
+        }
+        
+        if let tag = MovementTag(rawValue: tag!) {
+            switch tag {
+            case .forward:
+                touchHandlerForwardBackward.onTouchEnd { }
+                return
+            case .backward:
+                touchHandlerForwardBackward.onTouchEnd {  }
+                return
+            }
+        }
+        
+        if let tag = ControlTag(rawValue: tag!){
+            switch tag {
+            case .right:
+                self.touchHandler.onTouchEnd { self.shipScene?.onMoveRightRelease() }
+                break;
+            case .left:
+                self.touchHandler.onTouchEnd { self.shipScene?.onMoveLeftRelease() }
+                break;
+            case .up:
+                self.touchHandler.onTouchEnd { self.shipScene?.onMoveUpRelease() }
+                break;
+            case .down:
+                self.touchHandler.onTouchEnd { self.shipScene?.onMoveDownRelease() }
+                break;
             }
         }
     }
@@ -169,19 +208,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 //    }
 //
 
-//Button action methods
-    
- 
 
-    @IBAction func onForward(_ sender: Any) {
-        shipScene!.moveForward()
-    }
-    
-    
-    @IBAction func onBack(_ sender: Any) {
-       shipScene!.moveBackward()
-    }
-    
 
     // Try with a floor node instead - this didn't work so well but leaving in for reference
     func createPlaneNode(anchor: ARPlaneAnchor) -> SCNNode {

@@ -69,7 +69,6 @@ class ShipScene {
     func onMoveUpRelease() {
         SCNTransaction.animationDuration = 0.5
         node!.rotation = SCNVector4Make(0.0, 0.0, 0.0, 0.0)
-       
     }
     
     
@@ -89,15 +88,24 @@ class ShipScene {
         node!.rotation = SCNVector4Make(0.0, 0.0, 0.0, 0.0)
     }
     
-    
+    // MARK: - Forward controls
+
     func moveForward() {
-        let zpos:CGFloat = -0.5;
-        NodeAnimation.moveNode(self.node!, xPosition: 0, yPosition: 0, zPosition: zpos, completion: {})
+        SCNTransaction.animationDuration = 0.5
+        node!.position.z = node!.position.z - 0.5
+    }
+
+    func onMoveForwardRelease() {
     }
     
+    // MARK: - Backward controls
+
     func moveBackward() {
-        let zpos:CGFloat = 0.5;
-        NodeAnimation.moveNode(self.node!, xPosition: 0, yPosition: 0, zPosition: zpos, completion: {})
+        SCNTransaction.animationDuration = 0.5
+        node!.position.z = node!.position.z + 0.5
+    }
+    
+    func onMoveBackwardRelease() {
     }
     
     
