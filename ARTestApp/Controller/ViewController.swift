@@ -22,11 +22,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     @IBOutlet var sceneView: ARSCNView!
     var node: SCNNode?
     var shipScene: ShipScene?
-
-    var posX: CGFloat = 0.0
-    var posY: CGFloat = 0.0
-    var posZ: CGFloat = -0.2
-    var translationFactor: CGFloat = 0.3
     let touchHandler = TouchHandler()
     var planeNode: SCNNode?
 
@@ -51,6 +46,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
         
         node = scene.getSceneNode();
+        node?.position = SCNVector3Make(0.0, 0.0, -2.0)
+
         
         sceneView.scene.rootNode.addChildNode(node!)
         

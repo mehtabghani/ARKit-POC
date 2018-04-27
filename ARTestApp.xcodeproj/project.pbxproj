@@ -74,6 +74,7 @@
 		1B2951F52091E0FE002E1401 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				1B3FFD91208DC07500ABDBF1 /* TouchHandler.swift */,
 				1B2951F62091E179002E1401 /* NodeAnimation.swift */,
 			);
 			path = Helper;
@@ -108,7 +109,6 @@
 				1BE17A68207B581000B4BC60 /* Assets.xcassets */,
 				1BE17A6A207B581000B4BC60 /* LaunchScreen.storyboard */,
 				1BE17A6D207B581000B4BC60 /* Info.plist */,
-				1B3FFD91208DC07500ABDBF1 /* TouchHandler.swift */,
 				1B3FFD93208DCF7E00ABDBF1 /* Button.swift */,
 			);
 			path = ARTestApp;

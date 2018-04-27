@@ -21,10 +21,12 @@ class ShipScene {
     
     func getSceneNode() -> SCNNode {
         let scene = loadScene()
-        node = scene.rootNode.childNode(withName: "ship", recursively: true)
         
+        node = scene.rootNode.childNode(withName: "ship", recursively: true)
+        Utils.makePivotToCenter(for: node!)
         return node!
     }
+    
     
     // MARK: - Right controls
 
@@ -57,17 +59,17 @@ class ShipScene {
     
     // MARK: - Up controls
     func moveUP() {
-        SCNTransaction.animationDuration = 0.5
-        node!.rotation = SCNVector4Make(0.1, 0.0, 0.0, 0.5)
-       // SCNTransaction.animationDuration = 0.5
-       // node!.position.y = node!.position.y + 0.1
         
-
+        SCNTransaction.animationDuration = 0.5
+        node!.rotation = SCNVector4Make(0.02, 0.0, 0.0, 0.5)
+        SCNTransaction.animationDuration = 0.5
+        node!.position.y = node!.position.y + 0.1
     }
     
     func onMoveUpRelease() {
         SCNTransaction.animationDuration = 0.5
         node!.rotation = SCNVector4Make(0.0, 0.0, 0.0, 0.0)
+       
     }
     
     
@@ -76,9 +78,9 @@ class ShipScene {
 
     func moveDown() {
         SCNTransaction.animationDuration = 0.5
-        node!.rotation = SCNVector4Make(-0.5, 0.0, 0.0, 0.5)
-        SCNTransaction.animationDuration = 0.1
-        node!.position.y = node!.position.y - 0.05
+        node!.rotation = SCNVector4Make(-0.02, 0.0, 0.0, 0.5)
+        SCNTransaction.animationDuration = 0.5
+        node!.position.y = node!.position.y - 0.1
         
     }
     
